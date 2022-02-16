@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/static/images/logo_long_kr.jpg
+/src/main/resources/static/images/logo_sm.png
