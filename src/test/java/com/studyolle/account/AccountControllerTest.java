@@ -74,6 +74,7 @@ class AccountControllerTest {
         assertNotEquals(account.getPassword(),"12345678");
         //저장된 해시값이 평문과 같지 않음을 검증하지 않고,
         //평문 + salt가 저장된 해시값과 같은지 직접 비교는 해볼 수 없나???(스프링시큐리티 메서드 직접 가져다가)
+        assertNotNull(account.getEmailCheckToken());
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
 }
