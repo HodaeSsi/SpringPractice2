@@ -1,5 +1,6 @@
 package com.studyolle.account;
 
+import com.studyolle.domain.Account;
 import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -67,7 +68,12 @@ class AccountControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        assertTrue(accountRepository.existsByEmail("zz4471@naver.com"));
+        Account account = accountRepository.findByEmail("zz4471@naver.com");
+
+        assertNotNull(account);
+        assertNotEquals(account.getPassword(),"12345678");
+        //저장된 해시값이 평문과 같지 않음을 검증하지 않고,
+        //평문 + salt가 저장된 해시값과 같은지 직접 비교는 해볼 수 없나???(스프링시큐리티 메서드 직접 가져다가)
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
 }
