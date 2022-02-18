@@ -60,7 +60,7 @@ public class AccountController {
             return view;
         }
 
-        if(!account.getEmailCheckToken().equals(token)) {
+        if(!account.isValidToken(token)) {
             model.addAttribute("error", "wrong.token");
             return view;
         }
