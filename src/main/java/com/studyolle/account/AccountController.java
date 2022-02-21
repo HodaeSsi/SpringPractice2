@@ -44,9 +44,8 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.processNewAccount(signUpForm);
-
-        // TODO 회원 가입 처리
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account);
         return "redirect:/";
     }
 
@@ -66,6 +65,7 @@ public class AccountController {
         }
 
         account.completeSignUp();
+        accountService.login(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;
