@@ -33,3 +33,7 @@ build/
 .vscode/
 /src/main/resources/static/images/logo_long_kr.jpg
 /src/main/resources/static/images/logo_sm.png
+
+### NPM ###
+src/main/resources/static/node_modules
+src/main/resources/static/node
