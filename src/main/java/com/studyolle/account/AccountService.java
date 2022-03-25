@@ -21,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional //엔티티 생명주기 복습!!!(detached, persist, ...)
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
@@ -28,7 +29,6 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 //    private final AuthenticationManager authenticationManager;
 
-    @Transactional //엔티티 생명주기 복습!!!(detached, persist, ...)
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken(); //강의 '회원 가입 인증 메일 확인' 답변 : 비동기 처리???
@@ -73,6 +73,7 @@ public class AccountService implements UserDetailsService {
 //        context.setAuthentication(authentication);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -85,5 +86,11 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
     }
 }
